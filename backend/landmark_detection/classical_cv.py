@@ -21,7 +21,15 @@ from typing import Optional
 
 import cv2
 import numpy as np
-from scipy.ndimage import gaussian_filter1d
+
+
+def gaussian_filter1d(arr, sigma):
+    """Lightweight Gaussian smoothing using numpy convolution."""
+    size = int(6 * sigma + 1) | 1
+    x = np.arange(size) - size // 2
+    kernel = np.exp(-0.5 * (x / sigma) ** 2)
+    kernel /= kernel.sum()
+    return np.convolve(arr, kernel, mode="same")
 
 from .types import JointLine, Landmarks, Point
 
