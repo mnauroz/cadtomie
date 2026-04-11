@@ -1,0 +1,149 @@
+.panel {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.title {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.clearBtn {
+  padding: 1px 6px;
+  font-size: 11px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  opacity: 0.6;
+  transition: all 0.15s;
+}
+
+.clearBtn:hover {
+  opacity: 1;
+  border-color: #ef4444;
+  color: #ef4444;
+}
+
+.toolRow {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 6px;
+}
+
+.toolBtn {
+  flex: 1;
+  padding: 5px 4px;
+  font-size: 11px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.15s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.toolBtn:hover {
+  border-color: #38bdf8;
+  color: #38bdf8;
+}
+
+.toolActive {
+  background: rgba(56, 189, 248, 0.12);
+  border-color: #38bdf8;
+  color: #38bdf8;
+  font-weight: 600;
+}
+
+.toolIcon {
+  font-size: 14px;
+  line-height: 1;
+}
+
+.toolLabel {
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.toolHint {
+  font-size: 11px;
+  color: #38bdf8;
+  margin: 0 0 6px 0;
+  padding: 4px 6px;
+  background: rgba(56, 189, 248, 0.08);
+  border-radius: 4px;
+}
+
+.empty {
+  font-size: 11px;
+  color: var(--text-secondary);
+  opacity: 0.6;
+  margin: 4px 0 0 0;
+  text-align: center;
+  padding: 8px 0;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin-top: 4px;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 6px;
+  background: var(--bg-secondary);
+  border-radius: 4px;
+  border: 1px solid var(--border);
+}
+
+.itemIcon {
+  font-size: 12px;
+  color: #38bdf8;
+  flex-shrink: 0;
+}
+
+.itemLabel {
+  flex: 1;
+  font-size: 11px;
+  color: var(--text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.deleteBtn {
+  padding: 0 4px;
+  font-size: 12px;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  opacity: 0.5;
+  transition: opacity 0.15s;
+  flex-shrink: 0;
+}
+
+.deleteBtn:hover {
+  opacity: 1;
+  color: #ef4444;
+}

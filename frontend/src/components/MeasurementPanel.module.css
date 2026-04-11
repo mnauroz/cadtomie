@@ -1,0 +1,59 @@
+.panel { display: flex; flex-direction: column; gap: 8px; }
+
+.title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 4px;
+}
+
+.row {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 10px 12px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+}
+
+.label { flex: 1; min-width: 0; }
+.name { font-weight: 600; font-size: 13px; display: block; }
+.desc { font-size: 10px; color: var(--text-muted); }
+
+.right {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.value { font-size: 15px; font-weight: 700; font-variant-numeric: tabular-nums; }
+
+.badge {
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: 600;
+}
+.normal  { background: rgba(34, 197, 94, 0.15); color: var(--success); }
+.abnormal{ background: rgba(239, 68, 68, 0.15);  color: var(--danger); }
+.unknown { background: var(--bg-dark); color: var(--text-muted); }
+
+.norm {
+  width: 100%;
+  font-size: 10px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.notes {
+  font-size: 11px;
+  color: var(--text-muted);
+  background: var(--bg-card);
+  border-radius: var(--radius);
+  padding: 8px 10px;
+  line-height: 1.8;
+}
