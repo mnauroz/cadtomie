@@ -75,9 +75,13 @@ _allowed_origins = os.environ.get(
     "ALLOWED_ORIGINS", "http://localhost:5173"
 ).split(",")
 
+# Also allow all Vercel preview deployments (*.vercel.app)
+_allowed_origin_regex = r"https://.*\.vercel\.app"
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=_allowed_origins,
+    allow_origin_regex=_allowed_origin_regex,
     allow_methods=["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
     allow_headers=["Authorization", "Content-Type"],
     allow_credentials=True,
