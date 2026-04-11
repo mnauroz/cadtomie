@@ -23,6 +23,7 @@ GET  /health          Liveness check (no auth)
 from __future__ import annotations
 
 import base64
+import gc
 import logging
 import math
 import io
@@ -541,6 +542,9 @@ async def upload_dicom(
         raw_image_b64=raw_image_b64,
         align_angle_deg=session.align_angle_deg,
     )
+
+
+gc.collect()
 
 
 @app.get("/image/{session_id}")

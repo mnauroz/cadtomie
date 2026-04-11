@@ -73,6 +73,7 @@ class DicomLoader:
 
     def _extract_pixels(self, ds: Dataset) -> np.ndarray:
         import cv2
+        import gc
         raw = ds.pixel_array.astype(np.float32)
 
         # Multi-frame: take first frame
@@ -111,6 +112,16 @@ class DicomLoader:
         if arr.ndim == 2:
             arr = cv2.cvtColor(arr, cv2.COLOR_GRAY2BGR)
 
+        # Limit image size to max 1500px on longest side to save memory
+        max_dim = 1500
+        h, w = arr.shape[:2]
+        if max(h, w) > max_dim:
+            scale = max_dim / max(h, w)
+            new_w = int(w * scale)
+            new_h = int(h * scale)
+            arr = cv2.resize(arr, (new_w, new_h), interpolation=cv2.INTER_AREA)
+
+        gc.collect()
         return arr
 
     def _extract_spacing(self, ds: Dataset) -> tuple[float, float]:
