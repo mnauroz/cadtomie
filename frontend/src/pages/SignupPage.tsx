@@ -38,7 +38,7 @@ export default function SignupPage({ auth, onSwitchToLogin }: Props) {
           <h1 style={styles.title}>Check your email</h1>
           <p style={styles.subtitle}>
             We sent a confirmation link to <strong>{email}</strong>. Click it to
-            activate your account and start your 7-day free trial.
+            activate your account and start your 14-day free trial.
           </p>
           <button style={styles.link} onClick={onSwitchToLogin}>
             Back to sign in
@@ -52,7 +52,7 @@ export default function SignupPage({ auth, onSwitchToLogin }: Props) {
     <div style={styles.page}>
       <div style={styles.card}>
         <h1 style={styles.title}>CADtomie</h1>
-        <p style={styles.subtitle}>Create your account — 7-day free trial, no charge today</p>
+        <p style={styles.subtitle}>Create your account — 14-day free trial, no credit card required</p>
         <form onSubmit={handleSubmit} style={styles.form}>
           <input
             style={styles.input}

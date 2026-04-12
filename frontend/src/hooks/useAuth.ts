@@ -15,10 +15,23 @@ export interface AuthState {
   user: User | null;
   loading: boolean;
   subscriptionStatus: SubscriptionStatus;
+  trialDaysLeft: number;
   login: (email: string, password: string) => Promise<string | null>;
   signup: (email: string, password: string) => Promise<string | null>;
   logout: () => Promise<void>;
   refreshSubscription: () => Promise<void>;
+}
+
+const TRIAL_DAYS = 14;
+
+function computeTrialStatus(user: User | null): { status: SubscriptionStatus; daysLeft: number } {
+  if (!user) return { status: "none", daysLeft: 0 };
+  const created = new Date(user.created_at);
+  const now = new Date();
+  const diffDays = (now.getTime() - created.getTime()) / (1000 * 60 * 60 * 24);
+  const daysLeft = Math.max(0, Math.ceil(TRIAL_DAYS - diffDays));
+  if (diffDays <= TRIAL_DAYS) return { status: "trialing", daysLeft };
+  return { status: "canceled", daysLeft: 0 };
 }
 
 export function useAuth(): AuthState {
@@ -26,47 +39,24 @@ export function useAuth(): AuthState {
   const [loading, setLoading] = useState(true);
   const [subscriptionStatus, setSubscriptionStatus] =
     useState<SubscriptionStatus>("loading");
+  const [trialDaysLeft, setTrialDaysLeft] = useState(0);
 
-  async function fetchSubscription(accessToken: string) {
-    try {
-      const res = await fetch(
-        `${import.meta.env.VITE_API_BASE_URL ?? ""}/billing/status`,
-        { headers: { Authorization: `Bearer ${accessToken}` } }
-      );
-      if (!res.ok) {
-        setSubscriptionStatus("none");
-        return;
-      }
-      const json = await res.json();
-      setSubscriptionStatus(json.status ?? "none");
-    } catch {
-      setSubscriptionStatus("none");
-    }
+  function applyUser(u: User | null) {
+    setUser(u);
+    const { status, daysLeft } = computeTrialStatus(u);
+    setSubscriptionStatus(status);
+    setTrialDaysLeft(daysLeft);
   }
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
-      const session = data.session;
-      setUser(session?.user ?? null);
-      if (session?.access_token) {
-        fetchSubscription(session.access_token).finally(() =>
-          setLoading(false)
-        );
-      } else {
-        setSubscriptionStatus("none");
-        setLoading(false);
-      }
+      applyUser(data.session?.user ?? null);
+      setLoading(false);
     });
 
     const { data: listener } = supabase.auth.onAuthStateChange(
       (_event, session) => {
-        setUser(session?.user ?? null);
-        if (session?.access_token) {
-          setSubscriptionStatus("loading");
-          fetchSubscription(session.access_token);
-        } else {
-          setSubscriptionStatus("none");
-        }
+        applyUser(session?.user ?? null);
       }
     );
 
@@ -89,9 +79,8 @@ export function useAuth(): AuthState {
 
   async function refreshSubscription(): Promise<void> {
     const { data } = await supabase.auth.getSession();
-    const token = data.session?.access_token;
-    if (token) await fetchSubscription(token);
+    applyUser(data.session?.user ?? null);
   }
 
-  return { user, loading, subscriptionStatus, login, signup, logout, refreshSubscription };
+  return { user, loading, subscriptionStatus, trialDaysLeft, login, signup, logout, refreshSubscription };
 }

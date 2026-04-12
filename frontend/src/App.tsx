@@ -1386,28 +1386,30 @@ function AppContent({ auth }: { auth: ReturnType<typeof useAuth> }) {
   );
 }
 
+const LOADING_SCREEN = (
+  <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "#0d1117" }}>
+    <div style={{ color: "#8b949e", fontSize: 16 }}>Loading…</div>
+  </div>
+);
+
 /** Root component — handles auth routing before rendering AppContent. */
 export default function App() {
   const auth = useAuth();
   const [authScreen, setAuthScreen] = useState<"login" | "signup">("login");
 
-  // TODO: re-enable before going live
-  // if (auth.loading || auth.subscriptionStatus === "loading") {
-  //   return LOADING_SCREEN;
-  // }
+  if (auth.loading || auth.subscriptionStatus === "loading") {
+    return LOADING_SCREEN;
+  }
 
-  // TODO: re-enable login before going live
-  // if (!auth.user) {
-  //   return authScreen === "login"
-  //     ? <LoginPage auth={auth} onSwitchToSignup={() => setAuthScreen("signup")} />
-  //     : <SignupPage auth={auth} onSwitchToLogin={() => setAuthScreen("login")} />;
-  // }
+  if (!auth.user) {
+    return authScreen === "login"
+      ? <LoginPage auth={auth} onSwitchToSignup={() => setAuthScreen("signup")} />
+      : <SignupPage auth={auth} onSwitchToLogin={() => setAuthScreen("login")} />;
+  }
 
-  // TODO: re-enable subscription check before going live
-  // const activeSub =
-  //   auth.subscriptionStatus === "trialing" || auth.subscriptionStatus === "active";
-  // if (!activeSub && auth.subscriptionStatus === "none") return <PricingPage auth={auth} />;
-  // if (!activeSub) return <PaywallPage auth={auth} />;
+  const activeSub =
+    auth.subscriptionStatus === "trialing" || auth.subscriptionStatus === "active";
+  if (!activeSub) return <PaywallPage auth={auth} />;
 
   return <AppContent auth={auth} />;
 }

@@ -53,7 +53,7 @@ export default function LoginPage({ auth, onSwitchToSignup }: Props) {
         <p style={styles.switchText}>
           No account?{" "}
           <button style={styles.link} onClick={onSwitchToSignup}>
-            Create one — 7-day free trial
+            Create one — 14-day free trial
           </button>
         </p>
       </div>
