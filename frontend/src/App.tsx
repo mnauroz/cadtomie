@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useRef, useEffect } from "react";
-import { uploadDicom, updateLandmarks, setSide, setConfig, exportUrl, calibrateImage, exportPdfFromCanvas, autoDetectBall } from "./api";
+import { uploadDicom, updateLandmarks, setSide, setConfig, exportUrl, calibrateImage, exportPdfFromCanvas } from "./api";
 import type { Angles, DiaphysisLevel, ImageType, Landmarks, UploadResponse, Point, JointLine, Side, MeasureStep, AnnotationTool, Annotation } from "./types";
 import UploadPanel from "./components/UploadPanel";
 import DicomViewer, { type DicomViewerHandle } from "./components/DicomViewer";
@@ -832,21 +832,6 @@ function AppContent({ auth }: { auth: ReturnType<typeof useAuth> }) {
     }
   }, [session, calibType, calibPoints, side, measureStep]);
 
-  const handleAutoDetect = useCallback(async () => {
-    if (!session) return;
-    setLoading(true);
-    try {
-      const result = await autoDetectBall(session.session_id);
-      setCalibSpacingMm(result.pixel_spacing_mm);
-      setCalibMode("none");
-      setCalibPoints({});
-      if (side !== "unknown" && measureStep === "idle") {
-        setMeasureStep("hip_1");
-      }
-    } finally {
-      setLoading(false);
-    }
-  }, [session, side, measureStep]);
 
   const handleResetCalib = useCallback(() => {
     setCalibMode("none");
@@ -1222,7 +1207,6 @@ function AppContent({ auth }: { auth: ReturnType<typeof useAuth> }) {
             onTypeChange={handleTypeChange}
             onApplyCalib={handleApplyCalib}
             onReset={handleResetCalib}
-            onAutoDetect={handleAutoDetect}
           />
           {imageType === "long_leg_ap" && isReady && measureStep !== "done" && (
             <GuidedLandmarkPanel

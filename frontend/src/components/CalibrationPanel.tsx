@@ -17,7 +17,6 @@ interface Props {
   onTypeChange: (type: CalibType) => void;
   onApplyCalib: (knownMm: number) => void;
   onReset: () => void;
-  onAutoDetect?: () => Promise<void>;
 }
 
 export default function CalibrationPanel({
@@ -31,11 +30,8 @@ export default function CalibrationPanel({
   onTypeChange,
   onApplyCalib,
   onReset,
-  onAutoDetect,
 }: Props) {
   const [knownMm, setKnownMm] = useState<string>("25");
-  const [autoDetecting, setAutoDetecting] = useState(false);
-  const [autoError, setAutoError] = useState<string | null>(null);
   const { t } = useTranslation();
 
   const isLine   = calibType === "line";
@@ -88,32 +84,6 @@ export default function CalibrationPanel({
         </button>
       </div>
 
-      {/* Auto-detect button — always visible in sphere mode */}
-      {isSphere && onAutoDetect && (
-        <>
-          <div className={styles.row} style={{ marginBottom: 4 }}>
-            <button
-              className={styles.calibBtn}
-              style={{ background: "#238636", flex: 1 }}
-              onClick={async () => {
-                setAutoDetecting(true);
-                setAutoError(null);
-                try {
-                  await onAutoDetect();
-                } catch {
-                  setAutoError("Messkugel nicht erkannt — bitte manuell setzen.");
-                } finally {
-                  setAutoDetecting(false);
-                }
-              }}
-              disabled={loading || autoDetecting || !sessionId}
-            >
-              {autoDetecting ? "Erkenne…" : "⊙ Auto-Erkennung (25 mm)"}
-            </button>
-          </div>
-          {autoError && <p className={styles.hint} style={{ color: "#f85149" }}>{autoError}</p>}
-        </>
-      )}
 
       {calibMode === "none" ? (
         <>
