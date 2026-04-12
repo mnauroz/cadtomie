@@ -112,8 +112,8 @@ class DicomLoader:
         if arr.ndim == 2:
             arr = cv2.cvtColor(arr, cv2.COLOR_GRAY2BGR)
 
-        # Limit image size to max 2500px on longest side
-        max_dim = 2500
+        # Limit image size to max 2000px on longest side
+        max_dim = 2000
         h, w = arr.shape[:2]
         if max(h, w) > max_dim:
             scale = max_dim / max(h, w)

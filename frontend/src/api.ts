@@ -19,11 +19,15 @@ api.interceptors.request.use(async (config) => {
 });
 
 export async function uploadDicom(file: File, side: Side = "unknown"): Promise<UploadResponse> {
+  // Wake up the server first (Render may be cold-starting)
+  try { await api.get("/health", { timeout: 30000 }); } catch { /* ignore */ }
+
   const form = new FormData();
   form.append("file", file);
   form.append("side", side);
   const { data } = await api.post<UploadResponse>("/upload", form, {
     headers: { "Content-Type": "multipart/form-data" },
+    timeout: 120000, // 2 minutes for large DICOMs
   });
   return data;
 }
