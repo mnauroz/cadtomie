@@ -21,8 +21,8 @@ export const KIND_LABELS: Record<OsteotomyKind, string> = {
   DFO_OPEN_MED:  "DFO medial-öffnend",
 };
 
-export const VALGISIEREND: OsteotomyKind[] = ["HTO_OPEN_MED", "HTO_CLOSE_LAT", "DFO_CLOSE_LAT", "DFO_CLOSE_MED"];
-export const VARISIEREND:  OsteotomyKind[] = ["HTO_CLOSE_MED", "DFO_OPEN_LAT", "DFO_OPEN_MED"];
+export const VALGISIEREND: OsteotomyKind[] = ["HTO_OPEN_MED", "HTO_CLOSE_LAT", "DFO_CLOSE_LAT", "DFO_OPEN_MED"];
+export const VARISIEREND:  OsteotomyKind[] = ["HTO_CLOSE_MED", "DFO_OPEN_LAT", "DFO_CLOSE_MED"];
 
 export interface OstLine {
   p1: Point;
