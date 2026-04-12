@@ -2,7 +2,7 @@ import axios from "axios";
 import type { Angles, Point } from "../types";
 import type { OsteotomyKind, OsteotomyPlan, OstLine } from "./types";
 
-const BASE = "";  // proxied by Vite
+const BASE = import.meta.env.VITE_API_BASE_URL ?? "";
 
 /**
  * Response from init/update endpoints.
