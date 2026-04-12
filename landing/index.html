@@ -322,7 +322,7 @@
           <p style="margin-bottom: 0;">The app is currently free during the beta phase. Feedback from educators and trainees is very welcome.</p>
         </div>
       </div>
-      <form onsubmit="handleSubmit(event)">
+      <form onsubmit="handleSubmit(event)" action="https://formspree.io/f/xbdqrldy" method="POST">
         <div class="form-row">
           <input type="text" placeholder="First name" required />
           <input type="text" placeholder="Last name" required />
@@ -346,11 +346,25 @@
 </footer>
 
 <script>
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
-    // In production: connect to a form backend (e.g. Formspree, EmailJS)
-    document.getElementById("form-success").style.display = "block";
-    e.target.reset();
+    const form = e.target;
+    const data = new FormData(form);
+    try {
+      const res = await fetch("https://formspree.io/f/xbdqrldy", {
+        method: "POST",
+        body: data,
+        headers: { Accept: "application/json" }
+      });
+      if (res.ok) {
+        document.getElementById("form-success").style.display = "block";
+        form.reset();
+      } else {
+        alert("Something went wrong. Please email us directly at cadtomie@gmail.com");
+      }
+    } catch {
+      alert("Something went wrong. Please email us directly at cadtomie@gmail.com");
+    }
   }
 </script>
 
