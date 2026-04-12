@@ -113,6 +113,18 @@ _sessions: dict[str, Session] = {}
 # Sessions expire after 2 hours to free memory (images are never persisted to disk)
 _SESSION_TTL_SECONDS = 7200
 
+# Maximum number of sessions to keep in memory at once
+_MAX_SESSIONS = 5
+
+def _cleanup_old_sessions() -> None:
+    """Remove oldest sessions when limit is exceeded to free memory."""
+    if len(_sessions) >= _MAX_SESSIONS:
+        # Remove oldest sessions (dict preserves insertion order in Python 3.7+)
+        to_remove = list(_sessions.keys())[:len(_sessions) - _MAX_SESSIONS + 1]
+        for sid in to_remove:
+            del _sessions[sid]
+        gc.collect()
+
 
 def _get_session(session_id: str, user: dict) -> Session:
     """Fetch a session and verify it belongs to the requesting user."""
@@ -482,6 +494,8 @@ async def upload_dicom(
 
     if side not in ("right", "left", "unknown"):
         side = "unknown"
+
+    _cleanup_old_sessions()
 
     content = await file.read()
     filename = file.filename or "upload.dcm"
