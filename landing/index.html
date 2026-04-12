@@ -324,12 +324,12 @@
       </div>
       <form onsubmit="handleSubmit(event)" action="https://formspree.io/f/xbdqrldy" method="POST">
         <div class="form-row">
-          <input type="text" placeholder="First name" required />
-          <input type="text" placeholder="Last name" required />
+          <input type="text" name="first_name" placeholder="First name" required />
+          <input type="text" name="last_name" placeholder="Last name" required />
         </div>
-        <input type="email" placeholder="Email address" required />
-        <input type="text" placeholder="Institution / Hospital (optional)" />
-        <textarea placeholder="Your message or question…" required></textarea>
+        <input type="email" name="email" placeholder="Email address" required />
+        <input type="text" name="institution" placeholder="Institution / Hospital (optional)" />
+        <textarea name="message" placeholder="Your message or question…" required></textarea>
         <button type="submit" class="form-submit">Send message →</button>
         <p id="form-success" style="display:none; color: #10b981; font-size:0.9rem;">✓ Message sent! We'll be in touch soon.</p>
       </form>
