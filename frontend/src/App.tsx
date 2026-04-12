@@ -1178,7 +1178,6 @@ function AppContent({ auth }: { auth: ReturnType<typeof useAuth> }) {
           <div className={styles.exportBtns}>
             <button className="btn-ghost" onClick={() => handleExport("png")}>{t("export_png")}</button>
             <button className="btn-ghost" onClick={() => handleExport("pdf")}>{t("export_pdf")}</button>
-            <button className="btn-ghost" onClick={() => handleExport("json")}>{t("export_json")}</button>
           </div>
         )}
         <div className={styles.langSwitcher}>
