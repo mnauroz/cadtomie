@@ -1386,12 +1386,6 @@ function AppContent({ auth }: { auth: ReturnType<typeof useAuth> }) {
   );
 }
 
-const LOADING_SCREEN = (
-  <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "#0d1117" }}>
-    <div style={{ color: "#8b949e", fontSize: 16 }}>Loading…</div>
-  </div>
-);
-
 /** Root component — handles auth routing before rendering AppContent. */
 export default function App() {
   const auth = useAuth();
