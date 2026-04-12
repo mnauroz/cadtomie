@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Datenschutzerklärung – CADtomie</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --dark: #0f172a; --mid: #1e293b; --text: #e2e8f0; --muted: #94a3b8; --border: #334155; --blue: #2563eb; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: var(--dark); color: var(--text); line-height: 1.7; }
+    nav { display: flex; align-items: center; justify-content: space-between; padding: 0 2rem; height: 64px; background: rgba(15,23,42,0.95); border-bottom: 1px solid var(--border); }
+    .nav-logo { font-size: 1.25rem; font-weight: 700; color: #fff; text-decoration: none; }
+    .nav-logo span { color: var(--blue); }
+    .nav-back { color: var(--muted); text-decoration: none; font-size: 0.9rem; }
+    .nav-back:hover { color: var(--text); }
+    main { max-width: 760px; margin: 4rem auto; padding: 0 1.5rem 6rem; }
+    h1 { font-size: 2rem; font-weight: 800; margin-bottom: 0.5rem; }
+    .subtitle { color: var(--muted); margin-bottom: 2rem; font-size: 0.9rem; }
+    h2 { font-size: 1.1rem; font-weight: 700; margin: 2rem 0 0.5rem; color: #fff; }
+    h3 { font-size: 0.95rem; font-weight: 600; margin: 1.25rem 0 0.4rem; color: var(--text); }
+    p { color: var(--muted); margin-bottom: 0.75rem; }
+    ul { color: var(--muted); margin: 0.5rem 0 0.75rem 1.5rem; }
+    ul li { margin-bottom: 0.4rem; }
+    a { color: #93c5fd; }
+    .info {
+      background: rgba(37,99,235,0.1); border: 1px solid rgba(37,99,235,0.3);
+      border-radius: 8px; padding: 1rem 1.25rem; margin: 0.75rem 0;
+      color: #93c5fd; font-size: 0.9rem;
+    }
+    table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.9rem; }
+    th { text-align: left; padding: 0.6rem 0.75rem; background: rgba(51,65,85,0.5); color: var(--text); font-weight: 600; }
+    td { padding: 0.6rem 0.75rem; border-top: 1px solid var(--border); color: var(--muted); vertical-align: top; }
+  </style>
+</head>
+<body>
+<nav>
+  <a href="index.html" class="nav-logo">CAD<span>tomie</span></a>
+  <a href="index.html" class="nav-back">← Back</a>
+</nav>
+<main>
+  <h1>Datenschutzerklärung</h1>
+  <p class="subtitle">Stand: April 2025</p>
+
+  <div class="info">
+    Diese Datenschutzerklärung informiert Sie gemäß Art. 13 und 14 DSGVO über die Verarbeitung personenbezogener Daten im Zusammenhang mit der Nutzung von CADtomie.
+  </div>
+
+  <h2>1. Verantwortlicher</h2>
+  <p>
+    Martin Nauroz<br />
+    E-Mail: <a href="mailto:cadtomie@gmail.com">cadtomie@gmail.com</a>
+  </p>
+  <p>Bei Fragen zum Datenschutz wenden Sie sich bitte direkt an die oben genannte E-Mail-Adresse.</p>
+
+  <h2>2. Übersicht der Datenverarbeitungen</h2>
+  <p>CADtomie verarbeitet in folgenden Zusammenhängen personenbezogene Daten:</p>
+  <table>
+    <tr><th>Kontext</th><th>Datenart</th><th>Rechtsgrundlage</th></tr>
+    <tr><td>Webseitenaufruf</td><td>IP-Adresse, Zeitstempel, Browser</td><td>Art. 6 Abs. 1 lit. f DSGVO</td></tr>
+    <tr><td>Kontaktformular</td><td>Name, E-Mail, Institution, Nachricht</td><td>Art. 6 Abs. 1 lit. a DSGVO</td></tr>
+    <tr><td>Bildupload</td><td>Bilddaten (DICOM/JPG/PNG)</td><td>Art. 6 Abs. 1 lit. b DSGVO</td></tr>
+    <tr><td>Hosting (Vercel/Render)</td><td>IP-Adresse, Anfrage-Logs</td><td>Art. 6 Abs. 1 lit. f DSGVO</td></tr>
+  </table>
+
+  <h2>3. Hosting und technische Infrastruktur</h2>
+
+  <h3>3.1 Frontend-Hosting (Vercel)</h3>
+  <p>Die Website wird gehostet von:</p>
+  <p>Vercel Inc., 340 Pine Street Suite 701, San Francisco, CA 94104, USA</p>
+  <p>Beim Aufruf der Website werden technische Zugriffsdaten (IP-Adresse, Zeitstempel, aufgerufene URL, Browsertyp) in Server-Logfiles gespeichert. Diese Verarbeitung erfolgt auf Grundlage von Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an der sicheren und stabilen Bereitstellung des Dienstes). Der Datentransfer in die USA ist durch den EU-US Data Privacy Framework (Vercel ist zertifiziert) abgesichert.</p>
+
+  <h3>3.2 Backend-Hosting (Render)</h3>
+  <p>Die Bildverarbeitungs-API wird gehostet von:</p>
+  <p>Render Services Inc., 425 2nd Street Suite 401, San Francisco, CA 94107, USA</p>
+  <p>Beim Aufruf der API werden IP-Adresse und Anfrage-Metadaten protokolliert. Render stützt sich für Datenübermittlungen in die USA auf Standardvertragsklauseln (SCCs) gemäß Art. 46 Abs. 2 lit. c DSGVO. Weitere Informationen: <a href="https://render.com/privacy" target="_blank">render.com/privacy</a></p>
+
+  <h2>4. Kontaktformular (Formspree)</h2>
+  <p>Das Kontaktformular auf der Webseite verwendet den Dienst Formspree:</p>
+  <p>Formspree Inc., USA</p>
+  <p>Wenn Sie das Kontaktformular absenden, werden folgende Daten an Formspree übermittelt und von dort an Ihre Nachricht weitergeleitet:</p>
+  <ul>
+    <li>Vorname und Nachname</li>
+    <li>E-Mail-Adresse</li>
+    <li>Institution/Einrichtung (optional)</li>
+    <li>Ihre Nachricht</li>
+    <li>IP-Adresse und Zeitstempel (technisch durch Formspree erfasst)</li>
+  </ul>
+  <p><strong>Rechtsgrundlage:</strong> Art. 6 Abs. 1 lit. a DSGVO (Ihre ausdrückliche Einwilligung durch Absenden des Formulars).</p>
+  <p><strong>Speicherdauer:</strong> Die Daten werden bei Formspree für 30 Tage gespeichert und danach automatisch gelöscht, sofern keine weitergehende Kommunikation stattfindet. Wir speichern Ihre Kontaktdaten nur so lange, wie es für die Bearbeitung Ihrer Anfrage erforderlich ist.</p>
+  <p>Der Datentransfer in die USA erfolgt auf Grundlage von Standardvertragsklauseln (SCCs). Weitere Informationen: <a href="https://formspree.io/legal/privacy-policy" target="_blank">formspree.io/legal/privacy-policy</a></p>
+  <p>Sie können Ihre Einwilligung zur Verarbeitung der Kontaktformulardaten jederzeit widerrufen, indem Sie uns unter <a href="mailto:cadtomie@gmail.com">cadtomie@gmail.com</a> kontaktieren. Die Rechtmäßigkeit der bis zum Widerruf erfolgten Verarbeitung bleibt davon unberührt.</p>
+
+  <h2>5. Bildupload und Bildverarbeitung</h2>
+  <p>Wenn Sie Bilddateien (DICOM, JPEG, PNG) in CADtomie hochladen, werden diese zur Verarbeitung an unseren Backend-Server (Render, USA) übertragen.</p>
+  <p><strong>Was passiert mit Ihren Bilddaten:</strong></p>
+  <ul>
+    <li>Bilder werden ausschließlich für die Dauer Ihrer aktiven Sitzung im Arbeitsspeicher des Servers gehalten</li>
+    <li>Nach Ablauf der Sitzung (typisch: wenige Stunden) werden alle Sitzungsdaten automatisch gelöscht</li>
+    <li>Es findet keine dauerhafte Speicherung auf Festplatten statt</li>
+    <li>Bilder werden nicht an Dritte weitergegeben, nicht analysiert und nicht für Machine-Learning verwendet</li>
+  </ul>
+  <p><strong>Hinweis zu DICOM-Dateien:</strong> DICOM-Dateien können eingebettete Patientenmetadaten (Name, Geburtsdatum, Patienten-ID etc.) enthalten. Sie sind verantwortlich dafür, dass Ihre Uploads keine personenbezogenen Daten Dritter enthalten. Wir empfehlen, DICOM-Dateien vor dem Upload zu anonymisieren.</p>
+  <p><strong>Rechtsgrundlage:</strong> Art. 6 Abs. 1 lit. b DSGVO (Verarbeitung zur Erbringung des angeforderten Dienstes).</p>
+
+  <h2>6. Server-Logfiles</h2>
+  <p>Beim Zugriff auf CADtomie werden automatisch folgende Daten in Server-Logfiles gespeichert:</p>
+  <ul>
+    <li>IP-Adresse des zugreifenden Geräts</li>
+    <li>Datum und Uhrzeit des Zugriffs</li>
+    <li>Aufgerufene URL</li>
+    <li>HTTP-Statuscode</li>
+    <li>Übertragene Datenmenge</li>
+    <li>Browser- und Betriebssystemkennung (User-Agent)</li>
+  </ul>
+  <p>Diese Daten sind technisch zur Bereitstellung des Dienstes erforderlich und werden nicht mit anderen Datenquellen zusammengeführt. Sie werden nach spätestens 30 Tagen gelöscht.</p>
+  <p><strong>Rechtsgrundlage:</strong> Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an der sicheren Bereitstellung des Dienstes).</p>
+
+  <h2>7. Keine Cookies, kein Tracking</h2>
+  <p>CADtomie verwendet:</p>
+  <ul>
+    <li><strong>Keine Marketing- oder Tracking-Cookies</strong></li>
+    <li><strong>Kein Google Analytics oder vergleichbare Analysetools</strong></li>
+    <li><strong>Keine Social-Media-Buttons oder eingebettete Drittanbieter-Inhalte</strong></li>
+  </ul>
+  <p>Es können technisch notwendige Session-Cookies vom Browser gesetzt werden, um die Funktionalität der Anwendung zu gewährleisten. Diese enthalten keine personenbezogenen Daten und werden nach dem Schließen des Browsers gelöscht.</p>
+
+  <h2>8. Ihre Rechte nach DSGVO</h2>
+  <p>Sie haben gegenüber uns folgende Rechte hinsichtlich der Sie betreffenden personenbezogenen Daten:</p>
+  <ul>
+    <li><strong>Auskunftsrecht</strong> (Art. 15 DSGVO): Sie können Auskunft über die von uns verarbeiteten Daten verlangen.</li>
+    <li><strong>Berichtigungsrecht</strong> (Art. 16 DSGVO): Sie können die Berichtigung unrichtiger Daten verlangen.</li>
+    <li><strong>Löschungsrecht</strong> (Art. 17 DSGVO): Sie können die Löschung Ihrer Daten verlangen, soweit keine gesetzlichen Aufbewahrungspflichten entgegenstehen.</li>
+    <li><strong>Recht auf Einschränkung der Verarbeitung</strong> (Art. 18 DSGVO)</li>
+    <li><strong>Recht auf Datenübertragbarkeit</strong> (Art. 20 DSGVO)</li>
+    <li><strong>Widerspruchsrecht</strong> (Art. 21 DSGVO): Sie können der Verarbeitung auf Basis berechtigter Interessen widersprechen.</li>
+    <li><strong>Widerrufsrecht</strong>: Einwilligungen können jederzeit mit Wirkung für die Zukunft widerrufen werden.</li>
+  </ul>
+  <p>Zur Geltendmachung Ihrer Rechte wenden Sie sich an: <a href="mailto:cadtomie@gmail.com">cadtomie@gmail.com</a></p>
+
+  <h2>9. Beschwerderecht bei der Aufsichtsbehörde</h2>
+  <p>Sie haben das Recht, sich bei einer Datenschutz-Aufsichtsbehörde über die Verarbeitung Ihrer personenbezogenen Daten zu beschweren. Die zuständige Aufsichtsbehörde richtet sich nach Ihrem Wohnort. Eine Liste der deutschen Aufsichtsbehörden finden Sie unter: <a href="https://www.bfdi.bund.de/DE/Infothek/Anschriften_Links/anschriften_links-node.html" target="_blank">bfdi.bund.de</a></p>
+
+  <h2>10. Datensicherheit</h2>
+  <p>Alle Datenübertragungen zwischen Ihrem Browser und unseren Servern erfolgen verschlüsselt via HTTPS/TLS. Bilddaten werden ausschließlich in flüchtigem Arbeitsspeicher verarbeitet und nicht dauerhaft gespeichert.</p>
+
+  <h2>11. Aktualität und Änderungen dieser Datenschutzerklärung</h2>
+  <p>Diese Datenschutzerklärung gilt ab April 2025. Wir behalten uns vor, diese Erklärung bei Änderungen des Dienstes oder der rechtlichen Anforderungen zu aktualisieren. Die jeweils aktuelle Version ist auf dieser Seite abrufbar.</p>
+</main>
+</body>
+</html>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nutzungsbedingungen – CADtomie</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --dark: #0f172a; --mid: #1e293b; --text: #e2e8f0; --muted: #94a3b8; --border: #334155; --blue: #2563eb; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: var(--dark); color: var(--text); line-height: 1.7; }
+    nav { display: flex; align-items: center; justify-content: space-between; padding: 0 2rem; height: 64px; background: rgba(15,23,42,0.95); border-bottom: 1px solid var(--border); }
+    .nav-logo { font-size: 1.25rem; font-weight: 700; color: #fff; text-decoration: none; }
+    .nav-logo span { color: var(--blue); }
+    .nav-back { color: var(--muted); text-decoration: none; font-size: 0.9rem; }
+    .nav-back:hover { color: var(--text); }
+    main { max-width: 760px; margin: 4rem auto; padding: 0 1.5rem 6rem; }
+    h1 { font-size: 2rem; font-weight: 800; margin-bottom: 0.5rem; }
+    .subtitle { color: var(--muted); margin-bottom: 2rem; font-size: 0.9rem; }
+    h2 { font-size: 1.1rem; font-weight: 700; margin: 2rem 0 0.5rem; color: #fff; }
+    p { color: var(--muted); margin-bottom: 0.75rem; }
+    ul { color: var(--muted); margin: 0.5rem 0 0.75rem 1.5rem; }
+    ul li { margin-bottom: 0.4rem; }
+    a { color: #93c5fd; }
+    .warning {
+      background: rgba(234,179,8,0.1); border: 1px solid rgba(234,179,8,0.3);
+      border-radius: 8px; padding: 1rem 1.25rem; margin: 0.75rem 0;
+      color: #fde68a; font-size: 0.9rem;
+    }
+    .info {
+      background: rgba(37,99,235,0.1); border: 1px solid rgba(37,99,235,0.3);
+      border-radius: 8px; padding: 1rem 1.25rem; margin: 0.75rem 0;
+      color: #93c5fd; font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+<nav>
+  <a href="index.html" class="nav-logo">CAD<span>tomie</span></a>
+  <a href="index.html" class="nav-back">← Back</a>
+</nav>
+<main>
+  <h1>Nutzungsbedingungen (AGB)</h1>
+  <p class="subtitle">Stand: April 2025</p>
+
+  <div class="warning">
+    <strong>Wichtiger Hinweis:</strong> CADtomie ist ausschließlich als Trainings- und Lernwerkzeug für medizinisches Fachpersonal konzipiert. Es handelt sich nicht um ein Medizinprodukt und ist nicht für den klinischen Einsatz, zur Diagnosestellung oder zur Therapieplanung bestimmt.
+  </div>
+
+  <h2>§ 1 Geltungsbereich und Vertragspartner</h2>
+  <p>Diese Nutzungsbedingungen gelten für die Nutzung der Webanwendung CADtomie (nachfolgend „Dienst"), erreichbar unter <a href="https://cadtomie.vercel.app">cadtomie.vercel.app</a>, sowie aller zugehörigen Unterseiten und APIs. Anbieter ist Martin Nauroz (nachfolgend „Anbieter").</p>
+  <p>Mit der Nutzung des Dienstes erkennen Sie diese Nutzungsbedingungen an. Entgegenstehende oder abweichende Bedingungen des Nutzers finden keine Anwendung.</p>
+
+  <h2>§ 2 Leistungsbeschreibung</h2>
+  <p>CADtomie ist eine webbasierte Anwendung zur Visualisierung und Analyse von Röntgen- und DICOM-Bilddaten zu ausschließlich bildungsbezogenen Zwecken. Der Dienst ermöglicht insbesondere:</p>
+  <ul>
+    <li>Upload und Darstellung von DICOM-, JPEG- und PNG-Bilddateien</li>
+    <li>Manuelle Markierung anatomischer Punkte und Landmarken</li>
+    <li>Berechnung von Achsen, Winkeln und Osteotomie-Parametern zu Übungszwecken</li>
+    <li>Export von Ergebnissen als PDF oder Bilddatei</li>
+  </ul>
+  <p>Alle Berechnungen und Darstellungen dienen ausschließlich der medizinischen Ausbildung. Der Anbieter behält sich vor, den Dienst jederzeit zu ändern, einzuschränken oder einzustellen.</p>
+
+  <h2>§ 3 Kein Medizinprodukt – Haftungsausschluss für klinische Nutzung</h2>
+  <div class="warning">
+    CADtomie ist <strong>kein Medizinprodukt</strong> im Sinne der EU-Verordnung 2017/745 (MDR). Die Anwendung ist nicht zertifiziert, validiert oder zugelassen für:
+    <ul style="margin-top:0.5rem;">
+      <li>Klinische Diagnosestellung</li>
+      <li>Therapieplanung oder präoperative Planung an echten Patienten</li>
+      <li>Entscheidungsunterstützung in der medizinischen Versorgung</li>
+    </ul>
+    Jede Nutzung zu klinischen Zwecken erfolgt auf ausschließlich eigene Gefahr des Nutzers. Der Anbieter lehnt jede Haftung für Schäden ab, die aus einer zweckwidrigen klinischen Verwendung entstehen.
+  </div>
+
+  <h2>§ 4 Zugangsvoraussetzungen und Nutzerkreis</h2>
+  <p>Der Dienst richtet sich an:</p>
+  <ul>
+    <li>Medizinstudentinnen und Medizinstudenten</li>
+    <li>Ärztinnen und Ärzte in Ausbildung (Assistenzärzte, Weiterbildungsassistenten)</li>
+    <li>Lehrende und wissenschaftliches Personal an Hochschulen und Kliniken</li>
+    <li>Sonstige Fachkräfte, die den Dienst ausschließlich zu Bildungszwecken nutzen</li>
+  </ul>
+  <p>Die Nutzung durch Minderjährige oder durch Personen, die den Dienst für klinische Zwecke einsetzen wollen, ist untersagt.</p>
+
+  <h2>§ 5 Nutzerpflichten und verbotene Handlungen</h2>
+  <p>Der Nutzer verpflichtet sich:</p>
+  <ul>
+    <li>den Dienst ausschließlich zu rechtmäßigen, nicht-klinischen Zwecken zu nutzen</li>
+    <li>keine echten Patientendaten ohne vorherige Anonymisierung hochzuladen</li>
+    <li>die technische Infrastruktur nicht zu überlasten (z.B. durch automatisierte Massenuploads)</li>
+    <li>keine Inhalte hochzuladen, die Rechte Dritter verletzen</li>
+    <li>keine Versuche zu unternehmen, Sicherheitsmaßnahmen zu umgehen oder das System zu manipulieren</li>
+  </ul>
+  <p>Bei Verstoß gegen diese Pflichten ist der Anbieter berechtigt, den Zugang zum Dienst zu sperren.</p>
+
+  <h2>§ 6 Bildaten und Datenschutz</h2>
+  <p>Hochgeladene Bilddaten (DICOM, JPG, PNG) werden ausschließlich für die Dauer der jeweiligen Sitzung serverseitig verarbeitet und danach automatisch gelöscht. Eine dauerhafte Speicherung erfolgt nicht.</p>
+  <p>Nutzer sind selbst verantwortlich dafür, dass hochgeladene Bilddaten keine personenbezogenen Daten (z.B. Patientennamen, Geburtsdaten, Patienten-IDs) enthalten. DICOM-Dateien sind vor dem Upload zu anonymisieren.</p>
+  <p>Weitere Informationen zur Datenverarbeitung finden Sie in unserer <a href="datenschutz.html">Datenschutzerklärung</a>.</p>
+
+  <h2>§ 7 Verfügbarkeit und technische Störungen</h2>
+  <p>Der Anbieter bemüht sich um eine hohe Verfügbarkeit des Dienstes, übernimmt jedoch keine Gewähr für eine ununterbrochene oder fehlerfreie Nutzbarkeit. Wartungsarbeiten, technische Störungen oder Kapazitätsengpässe können die Verfügbarkeit vorübergehend beeinträchtigen. Ein Anspruch auf Verfügbarkeit besteht nicht.</p>
+
+  <h2>§ 8 Haftung</h2>
+  <p>Der Anbieter haftet unbeschränkt für Schäden aus der Verletzung des Lebens, des Körpers oder der Gesundheit sowie für Vorsatz und grobe Fahrlässigkeit.</p>
+  <p>Für leichte Fahrlässigkeit haftet der Anbieter nur bei der Verletzung wesentlicher Vertragspflichten (Kardinalpflichten) und nur in Höhe des vorhersehbaren, vertragstypischen Schadens.</p>
+  <p>Im Übrigen ist die Haftung des Anbieters – insbesondere für Schäden aus der Nutzung der bereitgestellten Berechnungen, Messergebnisse oder Darstellungen zu medizinischen Zwecken – ausgeschlossen.</p>
+
+  <h2>§ 9 Geistiges Eigentum</h2>
+  <p>Alle Rechte am Dienst, seiner Software, Benutzeroberfläche und Dokumentation liegen beim Anbieter oder den jeweiligen Rechteinhabern. Eine Vervielfältigung, Verbreitung oder öffentliche Zugänglichmachung ohne ausdrückliche schriftliche Zustimmung ist untersagt.</p>
+  <p>Hochgeladene Bilddaten verbleiben im Eigentum des Nutzers. Der Nutzer räumt dem Anbieter lediglich ein zeitlich auf die Sitzungsdauer beschränktes Recht zur serverseitigen Verarbeitung ein.</p>
+
+  <h2>§ 10 Änderungen der Nutzungsbedingungen</h2>
+  <p>Der Anbieter behält sich vor, diese Nutzungsbedingungen jederzeit zu ändern. Änderungen werden auf dieser Seite veröffentlicht. Die fortgesetzte Nutzung des Dienstes nach Veröffentlichung von Änderungen gilt als Zustimmung zu den geänderten Bedingungen.</p>
+
+  <h2>§ 11 Anwendbares Recht und Gerichtsstand</h2>
+  <p>Es gilt ausschließlich deutsches Recht unter Ausschluss des UN-Kaufrechts (CISG).</p>
+  <p>Soweit gesetzlich zulässig, ist Gerichtsstand für alle Streitigkeiten aus oder im Zusammenhang mit diesen Nutzungsbedingungen der Sitz des Anbieters.</p>
+
+  <h2>§ 12 Salvatorische Klausel</h2>
+  <p>Sollte eine Bestimmung dieser Nutzungsbedingungen unwirksam oder undurchführbar sein oder werden, bleibt die Wirksamkeit der übrigen Bestimmungen unberührt. An die Stelle der unwirksamen Bestimmung tritt eine wirksame Regelung, die dem wirtschaftlichen Zweck der unwirksamen Bestimmung am nächsten kommt.</p>
+
+  <h2>Kontakt</h2>
+  <p>Bei Fragen zu diesen Nutzungsbedingungen: <a href="mailto:cadtomie@gmail.com">cadtomie@gmail.com</a></p>
+</main>
+</body>
+</html>
