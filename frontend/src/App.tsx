@@ -218,7 +218,7 @@ function AppContent({ auth }: { auth: ReturnType<typeof useAuth> }) {
       setHipMeasPts([]);
       setFemurMeasPts([]);
       setTibiaMeasPts([]);
-      setAnkleMeasPtM(null);
+      setAnkleMeasPts([]);
       setAnnotations([]);
       setActiveTool("none");
       setPendingAnnotPts([]);

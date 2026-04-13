@@ -38,6 +38,7 @@ export interface LandmarkPatch {
   ankle_center?: Point;
   distal_femoral_line?: JointLine;
   proximal_tibial_line?: JointLine;
+  distal_tibial_line?: JointLine;
   femur_diaphysis_levels?: DiaphysisLevel[];
   tibia_diaphysis_levels?: DiaphysisLevel[];
 }
