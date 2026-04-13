@@ -7,7 +7,7 @@ const BASE = import.meta.env.VITE_API_BASE_URL ?? "";  // e.g. https://api.cadto
 export type Side = "right" | "left" | "unknown";
 
 /** Axios instance that auto-attaches the Supabase JWT on every request. */
-const api = axios.create({ baseURL: BASE });
+export const api = axios.create({ baseURL: BASE });
 
 api.interceptors.request.use(async (config) => {
   const token = await getAccessToken();
