@@ -29,6 +29,7 @@ import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import PricingPage from "./pages/PricingPage";
 import PaywallPage from "./pages/PaywallPage";
+import ResetPasswordPage from "./pages/ResetPasswordPage";
 
 interface HistorySnapshot {
   landmarks: Landmarks | null;
@@ -1390,6 +1391,13 @@ function AppContent({ auth }: { auth: ReturnType<typeof useAuth> }) {
 export default function App() {
   const auth = useAuth();
   const [authScreen, setAuthScreen] = useState<"login" | "signup">("login");
+  const [isRecovery, setIsRecovery] = useState(() =>
+    window.location.hash.includes("type=recovery")
+  );
+
+  if (isRecovery) {
+    return <ResetPasswordPage onDone={() => setIsRecovery(false)} />;
+  }
 
   if (auth.loading || auth.subscriptionStatus === "loading") {
     return LOADING_SCREEN;
