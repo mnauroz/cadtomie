@@ -87,7 +87,7 @@ class Exporter:
         cv2.imwrite(str(path), image)
 
     def get_png_bytes(self, image: np.ndarray) -> bytes:
-        success, buf = cv2.imencode(".png", image)
+        success, buf = cv2.imencode(".png", image, [cv2.IMWRITE_PNG_COMPRESSION, 6])
         if not success:
             raise RuntimeError("PNG encoding failed")
         return buf.tobytes()
