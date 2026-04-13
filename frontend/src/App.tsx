@@ -248,10 +248,11 @@ function AppContent({ auth }: { auth: ReturnType<typeof useAuth> }) {
       setLoading(false);
     }
     // Start guided measurement workflow when side is selected for the first time
-    if (measureStep === "idle" && calibSpacingMm !== null) {
+    // Only for long_leg_ap — slope (knee_lateral) does not need these landmarks
+    if (measureStep === "idle" && calibSpacingMm !== null && imageType === "long_leg_ap") {
       setMeasureStep("hip_1");
     }
-  }, [session, measureStep, calibSpacingMm]);
+  }, [session, measureStep, calibSpacingMm, imageType]);
 
   const handleToggleAnatomical = useCallback(async () => {
     if (!session) {
@@ -823,7 +824,7 @@ function AppContent({ auth }: { auth: ReturnType<typeof useAuth> }) {
       setCalibSpacingMm(result.pixel_spacing_mm);
       setCalibMode("none");
       setCalibPoints({});
-      if (side !== "unknown" && measureStep === "idle") {
+      if (side !== "unknown" && measureStep === "idle" && imageType === "long_leg_ap") {
         setMeasureStep("hip_1");
       }
     } catch (e: any) {
