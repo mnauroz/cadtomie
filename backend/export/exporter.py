@@ -337,7 +337,7 @@ class Exporter:
                 cv2.putText(img, "Mikulicz", (lx, ly), FONT, FONT_SCALE, COLOUR_MIKULICZ, FONT_THICKNESS)
 
     def _draw_joint_lines(self, img: np.ndarray, landmarks: Landmarks) -> None:
-        for jl in [landmarks.distal_femoral_line, landmarks.proximal_tibial_line]:
+        for jl in [landmarks.distal_femoral_line, landmarks.proximal_tibial_line, landmarks.distal_tibial_line]:
             if jl is None:
                 continue
             p1 = (int(jl.medial.x), int(jl.medial.y))
@@ -419,5 +419,6 @@ class Exporter:
             "ankle_center": pt(lm.ankle_center),
             "distal_femoral_line": jl(lm.distal_femoral_line),
             "proximal_tibial_line": jl(lm.proximal_tibial_line),
+            "distal_tibial_line": jl(lm.distal_tibial_line),
             "confidence": lm.confidence,
         }

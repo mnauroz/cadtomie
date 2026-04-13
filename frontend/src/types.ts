@@ -19,6 +19,7 @@ export interface Landmarks {
   ankle_center: Point | null;
   distal_femoral_line: JointLine | null;
   proximal_tibial_line: JointLine | null;
+  distal_tibial_line: JointLine | null;
   femur_diaphysis_levels: DiaphysisLevel[];
   tibia_diaphysis_levels: DiaphysisLevel[];
   confidence: Record<string, number>;
@@ -66,7 +67,7 @@ export type MeasureStep =
   | "hip_1" | "hip_2" | "hip_3"
   | "femur_1" | "femur_2" | "femur_3" | "femur_4"
   | "tibia_1" | "tibia_2" | "tibia_3" | "tibia_4"
-  | "ankle_m" | "ankle_l"
+  | "ankle_1" | "ankle_2" | "ankle_3" | "ankle_4"
   | "done";
 
 export type AnnotationTool = "none" | "line" | "angle" | "text";

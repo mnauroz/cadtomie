@@ -48,7 +48,7 @@ interface Props {
   hipMeasPts?: Point[];
   femurMeasPts?: Point[];
   tibiaMeasPts?: Point[];
-  ankleMeasPtM?: Point | null;
+  ankleMeasPts?: Point[];
   // Annotation tools
   annotations?: Annotation[];
   activeTool?: AnnotationTool;
@@ -302,7 +302,7 @@ const DicomViewer = forwardRef<DicomViewerHandle, Props>(function DicomViewer({
   hipMeasPts = [] as Point[],
   femurMeasPts = [] as Point[],
   tibiaMeasPts = [] as Point[],
-  ankleMeasPtM = null,
+  ankleMeasPts = [] as Point[],
   annotations = [] as Annotation[],
   activeTool = "none" as AnnotationTool,
   pendingAnnotPts = [] as Point[],
@@ -981,8 +981,8 @@ const DicomViewer = forwardRef<DicomViewerHandle, Props>(function DicomViewer({
   femurMeasRef.current = femurMeasPts;
   const tibiaMeasRef = useRef<Point[]>([]);
   tibiaMeasRef.current = tibiaMeasPts;
-  const ankleMeasMRef = useRef<Point | null>(null);
-  ankleMeasMRef.current = ankleMeasPtM;
+  const ankleMeasRef = useRef<Point[]>([]);
+  ankleMeasRef.current = ankleMeasPts;
 
   // Keep refs in sync
   scaleRef.current = scale;
@@ -1022,7 +1022,7 @@ const DicomViewer = forwardRef<DicomViewerHandle, Props>(function DicomViewer({
     handles.current = buildHandles(landmarks, showAnatomical, plan);
     planHandles.current = buildPlanHandles(plan);
     draw();
-  }, [landmarks, scale, offset, showAnatomical, calibMode, calibPoints, plan, planningStep, pendingOstP1, confirmedOsteotomies, measureStep, hipMeasPts, femurMeasPts, tibiaMeasPts, ankleMeasPtM, annotations, pendingAnnotPts, slopeStep, slopePts, slopeValue, sagittalStep, sagittalOst, sagittalResult, confirmedSagittalOsts]);
+  }, [landmarks, scale, offset, showAnatomical, calibMode, calibPoints, plan, planningStep, pendingOstP1, confirmedOsteotomies, measureStep, hipMeasPts, femurMeasPts, tibiaMeasPts, ankleMeasPts, annotations, pendingAnnotPts, slopeStep, slopePts, slopeValue, sagittalStep, sagittalOst, sagittalResult, confirmedSagittalOsts]);
 
   const fitToContainer = useCallback(() => {
     const container = containerRef.current;
@@ -1530,8 +1530,15 @@ const DicomViewer = forwardRef<DicomViewerHandle, Props>(function DicomViewer({
       ctx.setLineDash([5, 3]); ctx.stroke(); ctx.setLineDash([]);
     }
 
-    const am = ankleMeasMRef.current;
-    if (am) dot(am, "#fb923c", "A-M");
+    // Ankle intermediate points + preview joint line
+    const ap = ankleMeasRef.current;
+    ap.forEach((p, i) => dot(p, "#fb923c", `A${i + 1}`));
+    if (ap.length >= 2) {
+      const [x1, y1] = toC(ap[0]); const [x2, y2] = toC(ap[1]);
+      ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2);
+      ctx.strokeStyle = "#fb923c88"; ctx.lineWidth = 1.5;
+      ctx.setLineDash([5, 3]); ctx.stroke(); ctx.setLineDash([]);
+    }
   }
 
   function drawAnnotations(
@@ -2534,8 +2541,10 @@ const DicomViewer = forwardRef<DicomViewerHandle, Props>(function DicomViewer({
           : measureStep === "tibia_2" ? t("guided_knee_jl_p2")
           : measureStep === "tibia_3" ? t("guided_knee_med_lat")
           : measureStep === "tibia_4" ? t("guided_knee_med_lat")
-          : measureStep === "ankle_m" ? t("guided_ankle_med")
-          : measureStep === "ankle_l" ? t("guided_ankle_lat")
+          : measureStep === "ankle_1" ? t("guided_knee_jl_p1")
+          : measureStep === "ankle_2" ? t("guided_knee_jl_p2")
+          : measureStep === "ankle_3" ? t("guided_ankle_med")
+          : measureStep === "ankle_4" ? t("guided_ankle_lat")
           : activeTool === "line" ? (pendingAnnotPts.length === 0 ? t("tool_hint_line_p1") : t("tool_hint_line_p2"))
           : activeTool === "angle" ? (pendingAnnotPts.length === 0 ? t("tool_hint_angle_p1") : pendingAnnotPts.length === 1 ? t("tool_hint_angle_p2") : t("tool_hint_angle_p3"))
           : activeTool === "text" ? t("tool_hint_text")

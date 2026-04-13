@@ -52,6 +52,7 @@ class Landmarks:
     distal_femoral_line: Optional[JointLine] = None
     proximal_tibial_line: Optional[JointLine] = None
     ankle_center: Optional[Point] = None
+    distal_tibial_line: Optional[JointLine] = None
     femur_diaphysis_levels: list[DiaphysisLevel] = field(default_factory=list)
     tibia_diaphysis_levels: list[DiaphysisLevel] = field(default_factory=list)
     confidence: dict[str, float] = field(default_factory=dict)

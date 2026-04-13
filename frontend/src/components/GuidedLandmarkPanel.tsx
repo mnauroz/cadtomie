@@ -8,12 +8,13 @@ interface Props {
   hipPoints: Point[];
   femurPts: Point[];
   tibiaPts: Point[];
-  anklePtM: Point | null;
+  anklePts: Point[];
   hipCenter: Point | null;
   dfl: JointLine | null;
   kneeCenter: Point | null;
   ptl: JointLine | null;
   ankleCenter: Point | null;
+  dtl: JointLine | null;
   onResetSection: (to: MeasureStep) => void;
 }
 
@@ -22,25 +23,26 @@ export default function GuidedLandmarkPanel({
   hipPoints,
   femurPts,
   tibiaPts,
-  anklePtM,
+  anklePts,
   hipCenter,
   dfl,
   kneeCenter,
   ptl,
   ankleCenter,
+  dtl,
   onResetSection,
 }: Props) {
   const { t } = useTranslation();
 
   const hipDone    = !["hip_1","hip_2","hip_3"].includes(measureStep) && measureStep !== "idle";
-  const femurDone  = ["tibia_1","tibia_2","tibia_3","tibia_4","ankle_m","ankle_l","done"].includes(measureStep);
-  const tibiaDone  = ["ankle_m","ankle_l","done"].includes(measureStep);
+  const femurDone  = ["tibia_1","tibia_2","tibia_3","tibia_4","ankle_1","ankle_2","ankle_3","ankle_4","done"].includes(measureStep);
+  const tibiaDone  = ["ankle_1","ankle_2","ankle_3","ankle_4","done"].includes(measureStep);
   const ankleDone  = measureStep === "done";
 
   const hipActive   = measureStep === "hip_1" || measureStep === "hip_2" || measureStep === "hip_3";
   const femurActive = measureStep === "femur_1" || measureStep === "femur_2" || measureStep === "femur_3" || measureStep === "femur_4";
   const tibiaActive = measureStep === "tibia_1" || measureStep === "tibia_2" || measureStep === "tibia_3" || measureStep === "tibia_4";
-  const ankleActive = measureStep === "ankle_m" || measureStep === "ankle_l";
+  const ankleActive = measureStep === "ankle_1" || measureStep === "ankle_2" || measureStep === "ankle_3" || measureStep === "ankle_4";
 
   return (
     <div className={styles.panel}>
@@ -116,13 +118,19 @@ export default function GuidedLandmarkPanel({
         done={ankleDone}
         active={ankleActive}
         inactive={!tibiaDone}
-        onReset={ankleDone ? () => onResetSection("ankle_m") : undefined}
+        onReset={ankleDone ? () => onResetSection("ankle_1") : undefined}
         resetLabel={t("guided_reset")}
       >
-        <Step idx={1} label={t("guided_ankle_med")} done={!!anklePtM || ankleDone} active={measureStep === "ankle_m"} inactive={!tibiaDone} />
-        <Step idx={2} label={t("guided_ankle_lat")} done={ankleDone} active={measureStep === "ankle_l"} inactive={!anklePtM && !ankleDone} />
-        {ankleDone && ankleCenter && (
-          <div className={styles.result}>{t("guided_mid")}{ankleCenter.x.toFixed(0)}, {ankleCenter.y.toFixed(0)})</div>
+        <Step idx={1} label={t("guided_knee_jl_p1")} done={anklePts.length >= 1 || ankleDone} active={measureStep === "ankle_1"} inactive={!tibiaDone} />
+        <Step idx={2} label={t("guided_knee_jl_p2")} done={anklePts.length >= 2 || ankleDone} active={measureStep === "ankle_2"} inactive={anklePts.length < 1 && !ankleDone} />
+        <Step idx={3} label={t("guided_ankle_med")} done={anklePts.length >= 3 || ankleDone} active={measureStep === "ankle_3"} inactive={anklePts.length < 2 && !ankleDone} />
+        <Step idx={4} label={t("guided_ankle_lat")} done={ankleDone} active={measureStep === "ankle_4"} inactive={anklePts.length < 3 && !ankleDone} />
+        {ankleDone && dtl && (
+          <div className={styles.result}>
+            DTL-M: ({dtl.medial.x.toFixed(0)}, {dtl.medial.y.toFixed(0)})<br />
+            DTL-L: ({dtl.lateral.x.toFixed(0)}, {dtl.lateral.y.toFixed(0)})
+            {ankleCenter && <><br />{t("guided_mid")}{ankleCenter.x.toFixed(0)}, {ankleCenter.y.toFixed(0)})</>}
+          </div>
         )}
       </Section>
     </div>

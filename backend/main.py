@@ -185,6 +185,7 @@ class LandmarkPatch(BaseModel):
     ankle_center: Optional[PointModel] = None
     distal_femoral_line: Optional[JointLineModel] = None
     proximal_tibial_line: Optional[JointLineModel] = None
+    distal_tibial_line: Optional[JointLineModel] = None
     femur_diaphysis_levels: Optional[list[DiaphysisLevelModel]] = None
     tibia_diaphysis_levels: Optional[list[DiaphysisLevelModel]] = None
 
@@ -428,6 +429,7 @@ def _serialize_landmarks(lm: Landmarks) -> dict:
         "ankle_center": pt(lm.ankle_center),
         "distal_femoral_line": jl(lm.distal_femoral_line),
         "proximal_tibial_line": jl(lm.proximal_tibial_line),
+        "distal_tibial_line": jl(lm.distal_tibial_line),
         "femur_diaphysis_levels": [lvl(l) for l in lm.femur_diaphysis_levels],
         "tibia_diaphysis_levels": [lvl(l) for l in lm.tibia_diaphysis_levels],
         "confidence": lm.confidence,
@@ -605,6 +607,16 @@ async def update_landmarks(
         lm.proximal_tibial_line = JointLine(
             medial=Point(patch.proximal_tibial_line.medial.x, patch.proximal_tibial_line.medial.y),
             lateral=Point(patch.proximal_tibial_line.lateral.x, patch.proximal_tibial_line.lateral.y),
+        )
+    if patch.distal_tibial_line:
+        dtl = JointLine(
+            medial=Point(patch.distal_tibial_line.medial.x, patch.distal_tibial_line.medial.y),
+            lateral=Point(patch.distal_tibial_line.lateral.x, patch.distal_tibial_line.lateral.y),
+        )
+        lm.distal_tibial_line = dtl
+        lm.ankle_center = Point(
+            (dtl.medial.x + dtl.lateral.x) / 2,
+            (dtl.medial.y + dtl.lateral.y) / 2,
         )
     if patch.femur_diaphysis_levels is not None:
         lm.femur_diaphysis_levels = [

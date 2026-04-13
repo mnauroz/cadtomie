@@ -168,7 +168,7 @@ function AppContent({ auth }: { auth: ReturnType<typeof useAuth> }) {
   const [hipMeasPts, setHipMeasPts] = useState<Point[]>([]);
   const [femurMeasPts, setFemurMeasPts] = useState<Point[]>([]);
   const [tibiaMeasPts, setTibiaMeasPts] = useState<Point[]>([]);
-  const [ankleMeasPtM, setAnkleMeasPtM] = useState<Point | null>(null);
+  const [ankleMeasPts, setAnkleMeasPts] = useState<Point[]>([]);
 
   // Annotation tool state
   const [activeTool, setActiveTool] = useState<AnnotationTool>("none");
@@ -644,7 +644,7 @@ function AppContent({ auth }: { auth: ReturnType<typeof useAuth> }) {
           setLandmarks(resp.landmarks);
           setAngles(resp.angles);
           setTibiaMeasPts([]);
-          setMeasureStep("ankle_m");
+          setMeasureStep("ankle_1");
         } catch (e: any) {
           setError(e.response?.data?.detail ?? e.message ?? "Update failed");
         } finally {
@@ -652,20 +652,34 @@ function AppContent({ auth }: { auth: ReturnType<typeof useAuth> }) {
         }
         return;
       }
-      // ── Ankle center ─────────────────────────────────────────────────────
-      if (measureStep === "ankle_m") {
-        setAnkleMeasPtM(pt);
-        setMeasureStep("ankle_l");
-        return;
-      }
-      if (measureStep === "ankle_l") {
-        const mid: Point = {
-          x: (ankleMeasPtM!.x + pt.x) / 2,
-          y: (ankleMeasPtM!.y + pt.y) / 2,
-        };
-        await handleLandmarkMove("ankle_center", mid);
-        setAnkleMeasPtM(null);
-        setMeasureStep("done");
+      // ── Ankle (4 points → DTL + ankle center) ────────────────────────────
+      if (measureStep === "ankle_1") { setAnkleMeasPts([pt]); setMeasureStep("ankle_2"); return; }
+      if (measureStep === "ankle_2") { setAnkleMeasPts(prev => [...prev, pt]); setMeasureStep("ankle_3"); return; }
+      if (measureStep === "ankle_3") { setAnkleMeasPts(prev => [...prev, pt]); setMeasureStep("ankle_4"); return; }
+      if (measureStep === "ankle_4") {
+        const aPts = [...ankleMeasPts, pt];
+        const [ap1, ap2, ap3, ap4] = aPts;
+        const proj3 = projectOnLine(ap3, ap1, ap2);
+        const proj4 = projectOnLine(ap4, ap1, ap2);
+        const dtl: JointLine = proj3.x <= proj4.x
+          ? { medial: proj3, lateral: proj4 }
+          : { medial: proj4, lateral: proj3 };
+        pushHistory();
+        setLoading(true);
+        try {
+          const resp = await updateLandmarks(session!.session_id, {
+            distal_tibial_line: dtl,
+          });
+          setImageB64(resp.image_b64);
+          setLandmarks(resp.landmarks);
+          setAngles(resp.angles);
+          setAnkleMeasPts([]);
+          setMeasureStep("done");
+        } catch (e: any) {
+          setError(e.response?.data?.detail ?? e.message ?? "Update failed");
+        } finally {
+          setLoading(false);
+        }
         return;
       }
       return;
@@ -787,7 +801,7 @@ function AppContent({ auth }: { auth: ReturnType<typeof useAuth> }) {
       }
       return;
     }
-  }, [imageType, slopeStep, handleSlopeClick, sagittalStep, handleSagittalClick, measureStep, hipMeasPts, femurMeasPts, tibiaMeasPts, ankleMeasPtM, activeTool, pendingAnnotPts, calibMode, calibType, planningStep, pendingOstP1, session, handleLandmarkMove, pushHistory]);
+  }, [imageType, slopeStep, handleSlopeClick, sagittalStep, handleSagittalClick, measureStep, hipMeasPts, femurMeasPts, tibiaMeasPts, ankleMeasPts, activeTool, pendingAnnotPts, calibMode, calibType, planningStep, pendingOstP1, session, handleLandmarkMove, pushHistory]);
 
   const handleStartCalib = useCallback(() => {
     setCalibMode("p1");
@@ -850,8 +864,8 @@ function AppContent({ auth }: { auth: ReturnType<typeof useAuth> }) {
       setFemurMeasPts([]);
     } else if (to === "tibia_1") {
       setTibiaMeasPts([]);
-    } else if (to === "ankle_m") {
-      setAnkleMeasPtM(null);
+    } else if (to === "ankle_1") {
+      setAnkleMeasPts([]);
     }
   }, []);
 
@@ -1216,12 +1230,13 @@ function AppContent({ auth }: { auth: ReturnType<typeof useAuth> }) {
               hipPoints={hipMeasPts}
               femurPts={femurMeasPts}
               tibiaPts={tibiaMeasPts}
-              anklePtM={ankleMeasPtM}
+              anklePts={ankleMeasPts}
               hipCenter={landmarks?.hip_center ?? null}
               dfl={landmarks?.distal_femoral_line ?? null}
               kneeCenter={landmarks?.knee_center ?? null}
               ptl={landmarks?.proximal_tibial_line ?? null}
               ankleCenter={landmarks?.ankle_center ?? null}
+              dtl={landmarks?.distal_tibial_line ?? null}
               onResetSection={handleResetSection}
             />
           )}
@@ -1258,7 +1273,7 @@ function AppContent({ auth }: { auth: ReturnType<typeof useAuth> }) {
                 hipMeasPts={hipMeasPts}
                 femurMeasPts={femurMeasPts}
                 tibiaMeasPts={tibiaMeasPts}
-                ankleMeasPtM={ankleMeasPtM}
+                ankleMeasPts={ankleMeasPts}
                 annotations={annotations}
                 activeTool={activeTool}
                 pendingAnnotPts={pendingAnnotPts}
