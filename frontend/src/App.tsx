@@ -1250,7 +1250,7 @@ function AppContent({ auth }: { auth: ReturnType<typeof useAuth> }) {
             <>
               <DicomViewer
                 ref={viewerRef}
-                imageB64={imageB64}
+                imageB64={imageType === "long_leg_ap" && measureStep !== "done" && rawImageB64 ? rawImageB64 : imageB64}
                 rawImageB64={rawImageB64}
                 baseAnnotatedImageB64={baseAnnotatedImageB64 || undefined}
                 baseAngles={baseAngles ?? undefined}
