@@ -1256,7 +1256,7 @@ function AppContent({ auth }: { auth: ReturnType<typeof useAuth> }) {
                 baseAngles={baseAngles ?? undefined}
                 baseLandmarks={baseLandmarks ?? undefined}
                 sessionKey={session?.session_id ?? ""}
-                landmarks={landmarks}
+                landmarks={imageType === "long_leg_ap" && measureStep !== "done" ? null : landmarks}
                 onLandmarkMove={handleLandmarkMove}
                 loading={loading}
                 showAnatomical={showAnatomical}
@@ -1278,7 +1278,7 @@ function AppContent({ auth }: { auth: ReturnType<typeof useAuth> }) {
                 activeTool={activeTool}
                 pendingAnnotPts={pendingAnnotPts}
                 pixelSpacingMm={calibSpacingMm}
-                angles={imageType === "long_leg_ap" ? angles : null}
+                angles={imageType === "long_leg_ap" && measureStep === "done" ? angles : null}
                 slopeStep={slopeStep}
                 slopePts={slopePts}
                 slopeValue={slopeValue}
