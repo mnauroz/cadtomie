@@ -496,6 +496,11 @@ function AppContent({ auth }: { auth: ReturnType<typeof useAuth> }) {
     setSagittalResult(null);
   }, [sagittalOst, sagittalResult, slopeValue, pushHistory]);
 
+  const handleDeleteConfirmedSagittal = useCallback((id: string) => {
+    pushHistory();
+    setConfirmedSagittalOsts(prev => prev.filter(co => co.id !== id));
+  }, [pushHistory]);
+
   const handleSlopeReset = useCallback(() => {
     setSlopeStep("idle");
     setSlopePts(EMPTY_SLOPE_POINTS);
@@ -1371,6 +1376,7 @@ function AppContent({ auth }: { auth: ReturnType<typeof useAuth> }) {
                   onStart={() => setSagittalStep("cut_p1")}
                   onReset={handleSagittalReset}
                   onConfirm={handleConfirmSagittal}
+                  onDeleteConfirmed={handleDeleteConfirmedSagittal}
                   onCorrectionChange={deg =>
                     setSagittalOst(prev => ({ ...prev, correctionDeg: deg }))
                   }

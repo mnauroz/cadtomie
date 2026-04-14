@@ -14,6 +14,7 @@ interface Props {
   onReset: () => void;
   onConfirm: () => void;
   onCorrectionChange: (deg: number) => void;
+  onDeleteConfirmed: (id: string) => void;
 }
 
 function slopeColor(v: number, normalStyle: string, abnormalStyle: string): string {
@@ -30,6 +31,7 @@ export default function SlopeCorrectionPanel({
   onReset,
   onConfirm,
   onCorrectionChange,
+  onDeleteConfirmed,
 }: Props) {
   const { t } = useTranslation();
 
@@ -76,6 +78,11 @@ export default function SlopeCorrectionPanel({
                     {co.slopeAfter > 0 ? "+" : ""}{co.slopeAfter.toFixed(1)}°
                   </span>
                 </span>
+                <button
+                  className={styles.deleteBtn}
+                  onClick={() => onDeleteConfirmed(co.id)}
+                  title="Delete"
+                >×</button>
               </div>
             );
           })}
