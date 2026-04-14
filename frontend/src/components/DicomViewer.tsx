@@ -907,6 +907,10 @@ const DicomViewer = forwardRef<DicomViewerHandle, Props>(function DicomViewer({
   const isPanning = useRef(false);
   const panStart = useRef({ mx: 0, my: 0, ox: 0, oy: 0 });
 
+  // Touch state
+  const lastTouchDistRef = useRef<number | null>(null);
+  const touchStartPosRef = useRef<{ x: number; y: number } | null>(null);
+
   const lastSessionKeyRef = useRef<string>("");
 
   const landmarksRef = useRef<Landmarks | null>(null);
@@ -2360,7 +2364,7 @@ const DicomViewer = forwardRef<DicomViewerHandle, Props>(function DicomViewer({
     return { x: (cx - ox) / s, y: (cy - oy) / s };
   };
 
-  const hitTest = (clientX: number, clientY: number): Handle | null => {
+  const hitTest = (clientX: number, clientY: number, touchSlop = 0): Handle | null => {
     const canvas = canvasRef.current!;
     const rect = canvas.getBoundingClientRect();
     const cx = clientX - rect.left;
@@ -2374,7 +2378,7 @@ const DicomViewer = forwardRef<DicomViewerHandle, Props>(function DicomViewer({
       const sx = h.x * s + ox;
       const sy = h.y * s + oy;
       const dist = Math.hypot(cx - sx, cy - sy);
-      if (dist <= h.radius + 4) return h;
+      if (dist <= h.radius + 4 + touchSlop) return h;
     }
     return null;
   };
@@ -2515,17 +2519,128 @@ const DicomViewer = forwardRef<DicomViewerHandle, Props>(function DicomViewer({
     setOffset({ x: newOx, y: newOy });
   };
 
+  // ── Touch handlers ────────────────────────────────────────────────────────
+  const onTouchStart = (e: React.TouchEvent) => {
+    e.preventDefault();
+    if (e.touches.length === 1) {
+      const t = e.touches[0];
+      touchStartPosRef.current = { x: t.clientX, y: t.clientY };
+      lastTouchDistRef.current = null;
+
+      // In any placement mode, treat tap-start the same as a click
+      const inPlacementMode =
+        calibModeRef.current !== "none" ||
+        (measureStepRef.current !== "idle" && measureStepRef.current !== "done") ||
+        planningStepRef.current !== "idle" ||
+        activeToolRef.current !== "none" ||
+        (slopeStepRef.current !== "idle" && slopeStepRef.current !== "done") ||
+        sagittalStepRef.current === "hinge" ||
+        sagittalStepRef.current === "cut_p1" ||
+        sagittalStepRef.current === "cut_p2";
+
+      if (inPlacementMode && onCanvasClick) {
+        const imgPt = toImageCoords(t.clientX, t.clientY);
+        onCanvasClick(imgPt);
+        return;
+      }
+
+      // Otherwise: start pan or drag handle (with larger touch slop)
+      const hit = hitTest(t.clientX, t.clientY, 16);
+      if (hit) {
+        draggingHandle.current = hit;
+      } else {
+        isPanning.current = true;
+        panStart.current = {
+          mx: t.clientX, my: t.clientY,
+          ox: offsetRef.current.x, oy: offsetRef.current.y,
+        };
+      }
+    } else if (e.touches.length === 2) {
+      // Pinch-to-zoom: cancel any pan/drag and record initial distance
+      isPanning.current = false;
+      draggingHandle.current = null;
+      const dx = e.touches[0].clientX - e.touches[1].clientX;
+      const dy = e.touches[0].clientY - e.touches[1].clientY;
+      lastTouchDistRef.current = Math.hypot(dx, dy);
+    }
+  };
+
+  const onTouchMove = (e: React.TouchEvent) => {
+    e.preventDefault();
+    if (e.touches.length === 1) {
+      const t = e.touches[0];
+      if (draggingHandle.current) {
+        const h = draggingHandle.current;
+        const imgPt = toImageCoords(t.clientX, t.clientY);
+        h.x = imgPt.x;
+        h.y = imgPt.y;
+        draw();
+        return;
+      }
+      if (isPanning.current) {
+        const dx = t.clientX - panStart.current.mx;
+        const dy = t.clientY - panStart.current.my;
+        setOffset({ x: panStart.current.ox + dx, y: panStart.current.oy + dy });
+      }
+    } else if (e.touches.length === 2) {
+      // Pinch zoom around midpoint
+      const dx = e.touches[0].clientX - e.touches[1].clientX;
+      const dy = e.touches[0].clientY - e.touches[1].clientY;
+      const dist = Math.hypot(dx, dy);
+      if (lastTouchDistRef.current !== null && dist > 0) {
+        const canvas = canvasRef.current!;
+        const rect = canvas.getBoundingClientRect();
+        const cx = (e.touches[0].clientX + e.touches[1].clientX) / 2 - rect.left;
+        const cy = (e.touches[0].clientY + e.touches[1].clientY) / 2 - rect.top;
+        const factor = dist / lastTouchDistRef.current;
+        const newScale = Math.min(Math.max(scaleRef.current * factor, 0.1), 20);
+        const ratio = newScale / scaleRef.current;
+        const newOx = cx - ratio * (cx - offsetRef.current.x);
+        const newOy = cy - ratio * (cy - offsetRef.current.y);
+        setScale(newScale);
+        setOffset({ x: newOx, y: newOy });
+      }
+      lastTouchDistRef.current = dist;
+    }
+  };
+
+  const onTouchEnd = (e: React.TouchEvent) => {
+    e.preventDefault();
+    if (e.touches.length === 0) {
+      if (draggingHandle.current) {
+        const h = draggingHandle.current;
+        if (e.changedTouches.length > 0) {
+          const t = e.changedTouches[0];
+          const imgPt = toImageCoords(t.clientX, t.clientY);
+          if (h.id.startsWith("plan_") && onPlanPointMove) {
+            onPlanPointMove(h.target as "osteotomy_line_p1" | "osteotomy_line_p2" | "hinge_point" | "target_point", imgPt);
+          } else {
+            onLandmarkMove(h.target, imgPt, h.side as any);
+          }
+        }
+        draggingHandle.current = null;
+      }
+      isPanning.current = false;
+      lastTouchDistRef.current = null;
+      touchStartPosRef.current = null;
+    }
+  };
+
   return (
     <div ref={containerRef} className={styles.container}>
       {loading && <div className={styles.overlay}><div className={styles.spinner} /></div>}
       <canvas
         ref={canvasRef}
         className={styles.canvas}
+        style={{ touchAction: "none" }}
         onMouseDown={onMouseDown}
         onMouseMove={onMouseMove}
         onMouseUp={onMouseUp}
         onMouseLeave={(e) => { cursorRef.current = null; onMouseUp(e); draw(); }}
         onWheel={onWheel}
+        onTouchStart={onTouchStart}
+        onTouchMove={onTouchMove}
+        onTouchEnd={onTouchEnd}
       />
       <div className={styles.hint}>
         {calibMode !== "none"

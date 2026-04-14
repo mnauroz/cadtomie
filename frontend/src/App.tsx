@@ -165,6 +165,11 @@ function AppContent({ auth }: { auth: ReturnType<typeof useAuth> }) {
 
   // Guided landmark measurement state
   const [measureStep, setMeasureStep] = useState<MeasureStep>("idle");
+
+  // Mobile panel visibility
+  const [leftPanelOpen, setLeftPanelOpen] = useState(false);
+  const [rightPanelOpen, setRightPanelOpen] = useState(false);
+
   const [hipMeasPts, setHipMeasPts] = useState<Point[]>([]);
   const [femurMeasPts, setFemurMeasPts] = useState<Point[]>([]);
   const [tibiaMeasPts, setTibiaMeasPts] = useState<Point[]>([]);
@@ -1215,7 +1220,7 @@ function AppContent({ auth }: { auth: ReturnType<typeof useAuth> }) {
       </header>
 
       <main className={styles.main}>
-        <aside className={styles.leftPanel}>
+        <aside className={`${styles.leftPanel}${leftPanelOpen ? " " + styles.panelOpen : ""}`}>
           <UploadPanel
             onUpload={handleUpload}
             loading={loading}
@@ -1319,7 +1324,33 @@ function AppContent({ auth }: { auth: ReturnType<typeof useAuth> }) {
           )}
         </section>
 
-        <aside className={styles.rightPanel}>
+        {/* Mobile overlay backdrop */}
+        {(leftPanelOpen || rightPanelOpen) && (
+          <div
+            className={styles.panelOverlay}
+            onClick={() => { setLeftPanelOpen(false); setRightPanelOpen(false); }}
+          />
+        )}
+
+        {/* Mobile panel toggle buttons */}
+        <div className={styles.mobilePanelToggle}>
+          <button
+            className={`${styles.mobilePanelBtn}${leftPanelOpen ? " " + styles.active : ""}`}
+            onClick={() => { setLeftPanelOpen(v => !v); setRightPanelOpen(false); }}
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            Upload
+          </button>
+          <button
+            className={`${styles.mobilePanelBtn}${rightPanelOpen ? " " + styles.active : ""}`}
+            onClick={() => { setRightPanelOpen(v => !v); setLeftPanelOpen(false); }}
+          >
+            Tools
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+        </div>
+
+        <aside className={`${styles.rightPanel}${rightPanelOpen ? " " + styles.panelOpen : ""}`}>
           {imageType === "knee_lateral" && imageB64 ? (
             <>
               <SlopePanel
