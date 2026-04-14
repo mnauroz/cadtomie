@@ -188,12 +188,12 @@ export default function PlanningPanel({ plan, step, landmarks, loading, confirme
         <div className={styles.section}>
           <div className={styles.sectionTitle}>{t("plan_confirmed_header")} ({confirmedOsteotomies.length})</div>
           {confirmedOsteotomies.map((co, i) => {
-            const isExpanded = expandedId === co.id;
+            const isExpanded = expandedId !== co.id; // collapsed only when explicitly toggled off
             return (
-              <div key={co.id} className={`${styles.confirmedRow} ${isExpanded ? styles.confirmedRowExpanded : ""}`}>
+              <div key={co.id} className={`${styles.confirmedRow} ${styles.confirmedRowExpanded}`}>
                 <div
                   className={styles.confirmedHeader}
-                  onClick={() => setExpandedId(isExpanded ? null : co.id)}
+                  onClick={() => setExpandedId(isExpanded ? co.id : null)}
                 >
                   <span className={styles.confirmedIndex}>{i + 1}</span>
                   <span className={styles.confirmedKind}>{t(`kind_${co.plan.kind}` as TranslationKey)}</span>

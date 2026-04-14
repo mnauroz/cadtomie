@@ -1686,7 +1686,7 @@ const DicomViewer = forwardRef<DicomViewerHandle, Props>(function DicomViewer({
       }
     };
 
-    // mLDFA — midpoint of DFL, offset right and slightly up
+    // mLDFA — midpoint of DFL, clearly right and above
     if (ang.mLDFA_deg !== null && lm.distal_femoral_line) {
       const dfl = lm.distal_femoral_line;
       const [mx, my] = [
@@ -1694,10 +1694,10 @@ const DicomViewer = forwardRef<DicomViewerHandle, Props>(function DicomViewer({
         (dfl.medial.y + dfl.lateral.y) / 2,
       ];
       const [cx, cy] = toC({ x: mx, y: my });
-      label(`mLDFA: ${ang.mLDFA_deg.toFixed(1)}°`, cx + 110, cy - 20, colorFor("mLDFA", ang.mLDFA_deg));
+      label(`mLDFA: ${ang.mLDFA_deg.toFixed(1)}°`, cx + 145, cy - 30, colorFor("mLDFA", ang.mLDFA_deg));
     }
 
-    // mMPTA — midpoint of PTL, offset left
+    // mMPTA — midpoint of PTL, clearly left
     if (ang.mMPTA_deg !== null && lm.proximal_tibial_line) {
       const ptl = lm.proximal_tibial_line;
       const [mx, my] = [
@@ -1705,13 +1705,13 @@ const DicomViewer = forwardRef<DicomViewerHandle, Props>(function DicomViewer({
         (ptl.medial.y + ptl.lateral.y) / 2,
       ];
       const [cx, cy] = toC({ x: mx, y: my });
-      label(`mMPTA: ${ang.mMPTA_deg.toFixed(1)}°`, cx - 110, cy, colorFor("mMPTA", ang.mMPTA_deg));
+      label(`mMPTA: ${ang.mMPTA_deg.toFixed(1)}°`, cx - 145, cy + 20, colorFor("mMPTA", ang.mMPTA_deg));
     }
 
-    // JLCA — knee center, offset down
+    // JLCA — knee center, offset right+down (avoids mMPTA on the left)
     if (ang.JLCA_deg !== null && lm.knee_center) {
       const [cx, cy] = toC(lm.knee_center);
-      label(`JLCA: ${ang.JLCA_deg.toFixed(1)}°`, cx, cy + 45, colorFor("JLCA", ang.JLCA_deg));
+      label(`JLCA: ${ang.JLCA_deg.toFixed(1)}°`, cx + 145, cy + 30, colorFor("JLCA", ang.JLCA_deg));
     }
 
     // HKA — midpoint of hip→ankle axis, offset right
@@ -1722,7 +1722,7 @@ const DicomViewer = forwardRef<DicomViewerHandle, Props>(function DicomViewer({
       };
       const [cx, cy] = toC(mid);
       const hkaText = `HKA: ${ang.HKA_deg.toFixed(1)}°`;
-      label(hkaText, cx + 110, cy, colorFor("HKA", ang.HKA_deg));
+      label(hkaText, cx + 145, cy, colorFor("HKA", ang.HKA_deg));
     }
   }
 
