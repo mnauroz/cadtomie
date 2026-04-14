@@ -73,4 +73,7 @@ export interface ConfirmedSagittalOst {
   ost: SagittalOsteotomy;
   slopeBefore: number;
   slopeAfter: number;
+  /** Rotated plateau endpoints — used to draw the corrected green line. */
+  correctedP1: { x: number; y: number };
+  correctedP2: { x: number; y: number };
 }

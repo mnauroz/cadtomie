@@ -485,6 +485,8 @@ function AppContent({ auth }: { auth: ReturnType<typeof useAuth> }) {
       ost: { ...sagittalOst },
       slopeBefore: slopeValue ?? 0,
       slopeAfter: sagittalResult.correctedSlope,
+      correctedP1: sagittalResult.correctedP1,
+      correctedP2: sagittalResult.correctedP2,
     };
 
     setConfirmedSagittalOsts(prev => [...prev, confirmed]);

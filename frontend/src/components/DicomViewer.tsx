@@ -1746,6 +1746,27 @@ const DicomViewer = forwardRef<DicomViewerHandle, Props>(function DicomViewer({
       const [x2, y2] = toC(cutP2);
       const [hx, hy] = toC(hingePoint);
 
+      // Corrected (post-op) plateau line — green, extended across viewport
+      if (co.correctedP1 && co.correctedP2) {
+        const [cx1, cy1] = toC(co.correctedP1);
+        const [cx2, cy2] = toC(co.correctedP2);
+        const dx = cx2 - cx1;
+        const dy = cy2 - cy1;
+        const len = Math.hypot(dx, dy) || 1;
+        const ext = 3000;
+        const ex = (dx / len) * ext;
+        const ey = (dy / len) * ext;
+        const isNormal = co.slopeAfter >= 5 && co.slopeAfter <= 10;
+        const lineColor = isNormal ? "#4ade80" : "#f87171";
+        ctx.beginPath();
+        ctx.moveTo(cx1 - ex, cy1 - ey);
+        ctx.lineTo(cx2 + ex, cy2 + ey);
+        ctx.strokeStyle = lineColor;
+        ctx.lineWidth = 1.5;
+        ctx.setLineDash([]);
+        ctx.stroke();
+      }
+
       // Cut line (orange, dashed)
       ctx.beginPath();
       ctx.moveTo(x1, y1);
