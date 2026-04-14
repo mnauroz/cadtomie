@@ -34,6 +34,7 @@ interface Props {
   loading: boolean;
   showAnatomical?: boolean;
   onCanvasClick?: (pt: Point) => void;
+  onUndoPoint?: () => void;
   calibMode?: CalibMode;
   calibType?: CalibType;
   calibPoints?: { p1?: Point; p2?: Point; p3?: Point };
@@ -289,6 +290,7 @@ const DicomViewer = forwardRef<DicomViewerHandle, Props>(function DicomViewer({
   loading,
   showAnatomical = false,
   onCanvasClick,
+  onUndoPoint,
   calibMode = "none" as CalibMode,
   calibType = "line" as CalibType,
   calibPoints = {} as { p1?: Point; p2?: Point; p3?: Point },
@@ -910,6 +912,10 @@ const DicomViewer = forwardRef<DicomViewerHandle, Props>(function DicomViewer({
   // Touch state
   const lastTouchDistRef = useRef<number | null>(null);
   const touchStartPosRef = useRef<{ x: number; y: number } | null>(null);
+
+  // Undo callback ref (stable reference for keydown listener)
+  const onUndoPointRef = useRef<(() => void) | undefined>(undefined);
+  onUndoPointRef.current = onUndoPoint;
 
   const lastSessionKeyRef = useRef<string>("");
 
@@ -2371,6 +2377,19 @@ const DicomViewer = forwardRef<DicomViewerHandle, Props>(function DicomViewer({
   // Redraw whenever scale/offset changes
   useEffect(() => { draw(); }, [scale, offset, draw]);
 
+  // Keyboard shortcut: Backspace or Escape → undo last placed point
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === "Backspace" || e.key === "Escape") {
+        const tag = (e.target as HTMLElement)?.tagName;
+        if (tag === "INPUT" || tag === "TEXTAREA") return; // don't intercept text inputs
+        onUndoPointRef.current?.();
+      }
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, []);
+
   // ------------------------------------------------------------------
   // Mouse events
   // ------------------------------------------------------------------
@@ -2664,6 +2683,23 @@ const DicomViewer = forwardRef<DicomViewerHandle, Props>(function DicomViewer({
         onTouchEnd={onTouchEnd}
       />
       <div className={styles.hint}>
+        {(() => {
+          const inPlacement =
+            calibMode !== "none" ||
+            (measureStep !== "idle" && measureStep !== "done");
+          const canUndo =
+            calibMode === "p2" || calibMode === "p3" ||
+            (measureStep !== "idle" && measureStep !== "hip_1");
+          return inPlacement && canUndo && onUndoPoint ? (
+            <button
+              className={styles.undoBtn}
+              onClick={onUndoPoint}
+              title="Undo last point (Backspace)"
+            >
+              ← Undo
+            </button>
+          ) : null;
+        })()}
         {calibMode !== "none"
           ? (calibMode === "p1" ? t("guided_hip_p1") : calibMode === "p2" ? t("guided_hip_p2") : t("guided_hip_p3"))
           : measureStep === "hip_1" ? t("guided_hip_p1")

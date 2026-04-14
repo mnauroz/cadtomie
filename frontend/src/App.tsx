@@ -868,6 +868,34 @@ function AppContent({ auth }: { auth: ReturnType<typeof useAuth> }) {
     // Just hides the UI state. For full reset, user would need to re-upload.
   }, []);
 
+  const handleUndoMeasurePoint = useCallback(() => {
+    // Calibration undo
+    if (calibMode === "p2") { setCalibPoints({}); setCalibMode("p1"); return; }
+    if (calibMode === "p3") { setCalibPoints(prev => ({ p1: prev.p1 })); setCalibMode("p2"); return; }
+
+    // Measurement undo — one step back
+    switch (measureStep) {
+      case "hip_2":   setHipMeasPts([]);                           setMeasureStep("hip_1");   return;
+      case "hip_3":   setHipMeasPts(prev => prev.slice(0, -1));   setMeasureStep("hip_2");   return;
+      case "femur_1": setHipMeasPts([]);                           setMeasureStep("hip_1");   return;
+      case "femur_2": setFemurMeasPts([]);                         setMeasureStep("femur_1"); return;
+      case "femur_3": setFemurMeasPts(prev => prev.slice(0, -1)); setMeasureStep("femur_2"); return;
+      case "femur_4": setFemurMeasPts(prev => prev.slice(0, -1)); setMeasureStep("femur_3"); return;
+      case "tibia_1": setFemurMeasPts([]);                         setMeasureStep("femur_1"); return;
+      case "tibia_2": setTibiaMeasPts([]);                         setMeasureStep("tibia_1"); return;
+      case "tibia_3": setTibiaMeasPts(prev => prev.slice(0, -1)); setMeasureStep("tibia_2"); return;
+      case "tibia_4": setTibiaMeasPts(prev => prev.slice(0, -1)); setMeasureStep("tibia_3"); return;
+      case "ankle_1": setTibiaMeasPts([]);                         setMeasureStep("tibia_1"); return;
+      case "ankle_2": setAnkleMeasPts([]);                         setMeasureStep("ankle_1"); return;
+      case "ankle_3": setAnkleMeasPts(prev => prev.slice(0, -1)); setMeasureStep("ankle_2"); return;
+      case "ankle_4": setAnkleMeasPts(prev => prev.slice(0, -1)); setMeasureStep("ankle_3"); return;
+      case "done":    setAnkleMeasPts([]);                         setMeasureStep("ankle_1"); return;
+      default: return;
+    }
+  }, [calibMode, measureStep,
+      setCalibMode, setCalibPoints,
+      setHipMeasPts, setFemurMeasPts, setTibiaMeasPts, setAnkleMeasPts]);
+
   const handleResetSection = useCallback((to: MeasureStep) => {
     setMeasureStep(to);
     if (to === "hip_1") {
@@ -1285,6 +1313,7 @@ function AppContent({ auth }: { auth: ReturnType<typeof useAuth> }) {
                 loading={loading}
                 showAnatomical={showAnatomical}
                 onCanvasClick={handleCanvasClick}
+                onUndoPoint={handleUndoMeasurePoint}
                 calibMode={calibMode}
                 calibType={calibType}
                 calibPoints={calibPoints}

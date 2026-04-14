@@ -44,6 +44,37 @@
   border-radius: 20px;
   white-space: nowrap;
   pointer-events: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.undoBtn {
+  pointer-events: all;
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: #e2e8f0;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background 0.15s;
+  white-space: nowrap;
+  /* larger touch target on mobile */
+  min-height: 28px;
+  display: flex;
+  align-items: center;
+}
+.undoBtn:hover {
+  background: rgba(255,255,255,0.22);
+}
+@media (max-width: 768px) {
+  .undoBtn {
+    font-size: 13px;
+    padding: 4px 14px;
+    min-height: 36px;
+  }
 }
 
 .fitBtn {
